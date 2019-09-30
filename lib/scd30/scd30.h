@@ -2,6 +2,7 @@
 #ifndef SCD30_H
 #define SCD30_H
 
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -10,11 +11,11 @@ extern "C" {
 #endif
 
 // I2V interaction functions for dependency injection
-typedef int (*i2c_write_f)(void* context, int address, int length_out, unsigned char *data_out);
-typedef int (*i2c_read_f)(void* context, int address, int length_in, unsigned char *data_in);
+typedef int (*i2c_write_f)(void* context, int address, unsigned char *data_out, int length_out);
+typedef int (*i2c_read_f)(void* context, int address, unsigned char *data_in, int length_in);
 typedef int (*i2c_write_read_f)(void* context, int address,
-                                int length_out, unsigned char *data_out,
-                                int length_in, unsigned char *data_in);
+                                unsigned char *data_out, int length_out,
+                                unsigned char *data_in, int length_in);
 
 // SCD30 driver object
 // This defines required platform methods to interact with the SCD30 device
@@ -26,14 +27,14 @@ struct scd30_driver_s {
 
 // SCD30 device object
 struct scd30_s {
-    int open;				// Indicates the device has been opened successfully
-    struct scd30_driver_s driver;	// Driver function object
-    void* driver_ctx;			// Driver context pointer
+    uint8_t address;                // Device I2C address
+    struct scd30_driver_s *driver;	// Driver function object
+    void* driver_ctx;			    // Driver context pointer
 };
 
 
 // Initialise an SCD30 device
-int scd30_init(struct scd30_s *device, struct scd30_driver_s *driver, void* driver_ctx);
+int scd30_init(struct scd30_s *device, uint8_t address, struct scd30_driver_s *driver, void* driver_ctx);
 
 int scd30_set_measurement_interval(struct scd30_s *device, uint16_t interval_s);
 
