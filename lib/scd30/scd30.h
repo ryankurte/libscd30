@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define SCD30_DEFAULT_ADDR 0x61
+
 #ifdef __cplusplus
 extern "C" {
 #endif

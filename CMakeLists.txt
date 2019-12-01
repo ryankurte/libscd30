@@ -11,7 +11,7 @@ add_library(scd30 ${SCD30_SOURCES})
 else()
 
 idf_component_register(
-    SRCS ${SCD30_SOURCES}
+    SRCS "${CMAKE_CURRENT_LIST_DIR}/lib/source/scd30.c"
     INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/lib
 )
 
