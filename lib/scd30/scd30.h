@@ -21,22 +21,22 @@ typedef int (*i2c_write_read_f)(void* context, int address,
 
 // SCD30 driver object
 // This defines required platform methods to interact with the SCD30 device
-struct scd30_driver_s {
+typedef struct {
     i2c_write_f i2c_write;
     i2c_read_f i2c_read;
     i2c_write_read_f i2c_write_read;
-};
+} scd30_driver_t;
 
 // SCD30 device object
-struct scd30_s {
+typedef struct scd30_s {
     uint8_t address;                // Device I2C address
-    struct scd30_driver_s *driver;	// Driver function object
+    const scd30_driver_t *driver;	// Driver function object
     void* driver_ctx;			    // Driver context pointer
-};
+} scd30_t;
 
 
 // Initialise an SCD30 device
-int scd30_init(struct scd30_s *device, uint8_t address, struct scd30_driver_s *driver, void* driver_ctx);
+int scd30_init(struct scd30_s *device, uint8_t address, const scd30_driver_t *driver, void* driver_ctx);
 
 int scd30_set_measurement_interval(struct scd30_s *device, uint16_t interval_s);
 

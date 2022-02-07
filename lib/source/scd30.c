@@ -15,7 +15,7 @@ static uint8_t crc8(uint8_t* data, uint8_t length);
 static int convert(uint8_t *data, float *value);
 
 // Initialise the SCD30 device
-int scd30_init(struct scd30_s *device, uint8_t address, struct scd30_driver_s *driver, void* driver_ctx) {
+int scd30_init(struct scd30_s *device, uint8_t address, const scd30_driver_t *driver, void* driver_ctx) {
 	device->address = address;
 
 	// Store driver and context
