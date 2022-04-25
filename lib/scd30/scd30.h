@@ -66,7 +66,7 @@ int scd30_firmware_version(struct scd30_s *device, uint16_t *version);
 int scd30_data_ready(struct scd30_s *device);
 
 // Read measurements from the SCD30
-int scd30_read(struct scd30_s *device, float *co2, float *temp, float *humid);
+int scd30_get_measurement(struct scd30_s *device, float *co2, float *temp, float *humid);
 
 // Close the SCD30
 int scd30_close(struct scd30_s *device);

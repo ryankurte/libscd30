@@ -107,7 +107,7 @@ int scd30_data_ready(struct scd30_s *device) {
 }
 
 // Read measurements from the SCD30
-int scd30_read(struct scd30_s *device, float *co2, float *temp, float *humid) {
+int scd30_get_measurement(struct scd30_s *device, float *co2, float *temp, float *humid) {
 	uint8_t data[18];
 
 	int res = read_command(device, ReadMeasurement, data, sizeof(data));
@@ -190,17 +190,17 @@ static int write_command(struct scd30_s *device, uint16_t command, uint16_t* dat
 }
 
 // Internal device read command
-static int read_command(struct scd30_s *device, uint16_t command, uint8_t* data, uint8_t data_len) {
-	uint8_t buff[2] = { command >> 8, command & 0xFF};
+static int read_command(struct scd30_s *device, uint16_t command, uint8_t* buff, uint8_t buff_len) {
+	uint8_t data[2] = { command >> 8, command & 0xFF};
 
 	// Write read command 
-	int res = device->driver->i2c_write(device->driver_ctx, device->address | I2C_WRITE_FLAG, buff, sizeof(buff));
+	int res = device->driver->i2c_write(device->driver_ctx, device->address | I2C_WRITE_FLAG, data, sizeof(data));
 	if (res < 0) {
 		return res;
 	}
 
 	// Read data and return result
-	res = device->driver->i2c_write(device->driver_ctx, device->address | I2C_READ_FLAG, data, data_len);
+	res = device->driver->i2c_read(device->driver_ctx, device->address | I2C_READ_FLAG, buff, buff_len);
 	if (res < 0) {
 		return res;
 	}
